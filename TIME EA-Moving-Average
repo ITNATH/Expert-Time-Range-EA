@@ -11,7 +11,7 @@
 //---------------------------------------------------------------------+
 //|  INPUT GLOBAL VARIABLE                                             |
 //+--------------------------------------------------------------------+
-     Struct RANGE STRUCTURE {
+     struct RANGE_STRUCT {
      
     datetime  start_time; //start of range
     datetime  end_time;   //end of range
@@ -19,14 +19,13 @@
     double  high;         //high of range
     double low;           //low of range
     bool f_entry          //flag if we are inside the range
-    bool f_high breakout; //flag if a high breakout occurance
-    bool f_low breakout;  //flag if a low breakout occurance
+    bool f_high_breakout; //flag if a high breakout occurance
+    bool f_low_breakout;  //flag if a low breakout occurance
     
-   RANGE_STRUCTURE() :start_time(0),end_time(0),close_time(0),high(0),low(99999),f_highbreakout(false).f_high_breakout(false).f_high_breakout(false),f_low_breakout(false) (); 
-   
+   RANGE_STRUCT() :start_time(0),end_time(0),close_time(0),high(0),low(99999),f_highbreakout(false).f_high_breakout(false).f_high_breakout(false),f_low_breakout(false) {};  
    };
    
-   RANGE_STRUCTURE range;
+   RANGE_STRUCT range;
    MqlTick prevTick,lastTick;
    CTrade trade;
 //+------------------------------------------------------------------+
