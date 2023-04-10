@@ -65,6 +65,13 @@ if(InpRangeClose <= 0 || InpRangeClose >= 1440 || (InpRangeStart+InpRangeDuratio
  return INIT_PARAMETERS_INCORRECT;
 }
 
+ //calculated saw range
+if(_UninitReason==REASON_PARAMETERS){     // so position open +++++
+
+ calculateRange();
+
+}
+
 return(INIT_SUCCEEDED);
 }
 
@@ -73,6 +80,10 @@ return(INIT_SUCCEEDED);
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
 {
+
+  // delete objects
+  ObjectsDeleteAll(NULL,"range");
+  
 
 }
 
@@ -122,13 +133,65 @@ void OnTick(){
     }
     
    // calculate Range end time_cycle
-    range.end_time = range_start_time + InpRangeDuration*60;
+    range.end_time = range.start_time + InpRangeDuration*60;
     for(int i=0; i<2; i++){
        MqlDateTime tmp;
        TimeToStruct(range.end_time,tmp);
-       int dow = tmp.day of_week;
+       int dow = tmp.day_of_week;
+       if(dow==6 || dow==0) {
+          range.end_time += time_cycle;
+       }
+    }
+    
+       // calculate Range Close
+    range.close_time = (range.end_time - (range.end_time % time_cycle)) + InpRangeClose*60;
+    for(int i=0; i<2; i++){
+       MqlDateTime tmp;
+       TimeToStruct(range.close_time,tmp);
+       int dow = tmp.day_of_week;
        if(range.close_time <= range.end_time || dow==6 || dow==0) {
           range.close_time += time_cycle;
        }
     }
+    
+    //DRAW OBJECTS
+    DrawObjects();
+  }
+
+ void DrawObjects(){
+
+  // start 
+   ObjectDelete(NULL,"range start");
+   if(range.start_time>0){
+     ObjectCreate(NULL,"RANGE START",OBJ_VLINE,0,range.start_time,0);
+     ObjectSetString(NULL, "range start",OBJPROP_TOOLTIP,"start of the range \n"+TimeToString(range.start_time,TIME_DATE|TIME_MINUTES));
+     ObjectSetInteger(NULL,"range start",OBJPROP_COLOR,clrBlue);
+     ObjectSetInteger(NULL,"range start",OBJPROP_WIDTH,2);
+     ObjectSetInteger(NULL,"range start",OBJPROP_BACK,true);
+     
+       }
+       
+     //end time
+     
+     ObjectDelete(NULL,"range end");
+   if(range.end_time>0){
+     ObjectCreate(NULL,"RANGE end",OBJ_VLINE,0,range.end_time,0);
+     ObjectSetString(NULL, "range end",OBJPROP_TOOLTIP,"end of the range \n"+TimeToString(range.end_time,TIME_DATE|TIME_MINUTES));
+     ObjectSetInteger(NULL,"range end",OBJPROP_COLOR,clrDarkBlue);
+     ObjectSetInteger(NULL,"range end",OBJPROP_WIDTH,2);
+     ObjectSetInteger(NULL,"range end",OBJPROP_BACK,true);
+     
+    }
+    
+    //close time
+    
+   ObjectDelete(NULL,"range close");
+   if(range.close_time>0){
+     ObjectCreate(NULL,"RANGE close",OBJ_VLINE,0,range.close_time,0);
+     ObjectSetString(NULL, "range close",OBJPROP_TOOLTIP,"close of the range \n"+TimeToString(range.close_time,TIME_DATE|TIME_MINUTES));
+     ObjectSetInteger(NULL,"range close",OBJPROP_COLOR,clrDarkBlue);
+     ObjectSetInteger(NULL,"range close",OBJPROP_WIDTH,2);
+     ObjectSetInteger(NULL,"range close",OBJPROP_BACK,true);
+    
+        }
  }
