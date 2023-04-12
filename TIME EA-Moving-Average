@@ -96,6 +96,30 @@ void OnTick(){
    prevTick = lastTick;
    SymbolInfoTick(_Symbol,lastTick);
    
+   //RANGE CALCYLATION
+   
+   if(lastTick.time >= range.start_time && lastTick.time< range.end_time){
+   
+         // set flag
+      
+      range.f_entry = true;
+      
+         //new high
+         
+      if (lastTick.ask > range.high){
+         range.high = lastTick.ask;
+         DrawObjects();
+      
+      }
+         // new low
+         
+     if (lastTick.ask > range.high){
+         range.high = lastTick.ask;
+         DrawObjects();
+         
+     }
+     
+   }
    // calculate new range if .....
   if ((InpRangeClose >=0 && lastTick.time>=range.close_time)                     // close time reached
     ||(range.f_high_breakout && range.f_low_breakout)                          //both breakout flags are true
@@ -194,4 +218,40 @@ void OnTick(){
      ObjectSetInteger(NULL,"range close",OBJPROP_BACK,true);
     
         }
- }
+        
+        
+        //HIGH OF THE RANGE
+        
+        ObjectDelete(NULL,"range close");
+        
+   if(range.close_time>0){
+     ObjectCreate(NULL,"RANGE high",OBJ_TREND,0,range.start_time,range.high,range.end_time,range.high);
+     ObjectSetString(NULL, "range high",OBJPROP_TOOLTIP,"high of the range \n"+DoubleToString(range.high,_Digits));
+     ObjectSetInteger(NULL,"range high",OBJPROP_COLOR,clrBlue);
+     ObjectSetInteger(NULL,"range high",OBJPROP_WIDTH,2);
+     ObjectSetInteger(NULL,"range high",OBJPROP_BACK,true);
+     
+       }
+       
+       
+        //LOW OF THE RANGE
+        
+        ObjectDelete(NULL,"range low");
+        
+   if(range.close_time>999999){
+     ObjectCreate(NULL,"RANGE low",OBJ_TREND,0,range.start_time,range.low,range.end_time,range.low);
+     ObjectSetString(NULL, "range low",OBJPROP_TOOLTIP,"high of the range \n"+DoubleToString(range.low,_Digits));
+     ObjectSetInteger(NULL,"range low",OBJPROP_COLOR,clrBlue);
+     ObjectSetInteger(NULL,"range low",OBJPROP_WIDTH,2);
+     ObjectSetInteger(NULL,"range low",OBJPROP_BACK,true);
+     
+     ObjectCreate(NULL,"RANGE low",OBJ_TREND,0,range.start_time,range.low,range.end_time,range.low);
+     ObjectSetString(NULL, "range low",OBJPROP_TOOLTIP,"high of the range \n"+DoubleToString(range.low,_Digits));
+     ObjectSetInteger(NULL,"range low",OBJPROP_COLOR,clrBlue);
+     ObjectSetInteger(NULL,"range low",OBJPROP_WIDTH,2);
+     ObjectSetInteger(NULL,"range low",OBJPROP_STYLE,STYLE_DOT);
+     
+       }
+       
+    }
+    
