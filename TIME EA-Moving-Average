@@ -231,13 +231,21 @@ void OnTick(){
      ObjectSetInteger(NULL,"range high",OBJPROP_WIDTH,2);
      ObjectSetInteger(NULL,"range high",OBJPROP_BACK,true);
      
+     ObjectCreate(NULL,"RANGE high",OBJ_TREND,0,range.start_time,range.high,range.end_time,range.high);
+     ObjectSetString(NULL, "range high",OBJPROP_TOOLTIP,"high of the range \n"+DoubleToString(range.high,_Digits));
+     ObjectSetInteger(NULL,"range high",OBJPROP_COLOR,clrBlue);
+     ObjectSetInteger(NULL,"range high",OBJPROP_WIDTH,2);
+     ObjectSetInteger(NULL,"range high",OBJPROP_STYLE,STYLE_DOT);
+     
+     
+     
        }
        
        
         //LOW OF THE RANGE
         
-        ObjectDelete(NULL,"range low");
-        
+      ObjectsDeleteAll(NULL,"range low");
+       
    if(range.close_time>999999){
      ObjectCreate(NULL,"RANGE low",OBJ_TREND,0,range.start_time,range.low,range.end_time,range.low);
      ObjectSetString(NULL, "range low",OBJPROP_TOOLTIP,"high of the range \n"+DoubleToString(range.low,_Digits));
@@ -254,4 +262,5 @@ void OnTick(){
        }
        
     }
+
     
