@@ -198,9 +198,24 @@ void OnTick(){
     DrawObjects();
     
     
-    
   }
   
+ int CountOpenPosition() {
+  
+     int counter = 0;
+     int total = PositionTotal();
+     for(int i=total -1; 1>=0; i--) {
+         ulong ticket= PositionGetTicket(i);
+         if(ticket <=0){Print("Failed to get position ticket"); return -1;}
+         if(!PositionSelectByTicket(ticket)){Print("Failed to select position"); return -1;}
+         ulong magicnumber;
+         if(!PositionGetInteger(POSITION_MAGIC)){Print("Failed to get position magicnumber"); return -1;}
+         if(InpMageicNumber==magicnumber){counter++;}
+         
+         }
+         return counter;
+         
+     }
   
   
   void CheckBreakouts(){
