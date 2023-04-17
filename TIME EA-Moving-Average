@@ -65,7 +65,11 @@ if(InpRangeClose <= 0 || InpRangeClose >= 1440 || (InpRangeStart+InpRangeDuratio
  return INIT_PARAMETERS_INCORRECT;
 }
 
- //calculated saw range
+//SET MAGICNUMBER
+trade.SetExpertMagicNumber(InpMageicNumber);
+
+
+ //calculated new range
 if(_UninitReason==REASON_PARAMETERS){     // so position open +++++
 
  calculateRange();
