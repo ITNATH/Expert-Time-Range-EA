@@ -30,7 +30,8 @@
 //+------------------------------------------------------------------+
 //| INPUT |
 //+------------------------------------------------------------------+
-
+input int InpStopLoss = 150;   //stoploss in % to the range
+input int InpTakepProfit =100;          //Takeprofit in % to the range
 input int InpRangeStart = 600; //range start time is minutes after mid -night
 input int InpRangeDuration = 120; // range duration in minutes
 input int InpRangeClose = 1200; //range close time in minutes
@@ -50,6 +51,18 @@ if(InpLots <= 0 || InpLots > 1){
 Alert("lots <= 0 or > 1");
 return INIT_PARAMETERS_INCORRECT;
 }
+
+if(InpStopLoss <= 0 || InpStopLoss > 1000){
+Alert("Stop Loss <= 0 or Stop Loss > 1000");
+return INIT_PARAMETERS_INCORRECT;
+}
+
+if(InpTakepProfit < 0 || InpTakepProfit > 1000){
+Alert(" Take Profit < 0 or Take Profit > 1000");
+return INIT_PARAMETERS_INCORRECT;
+}
+
+
 if(InpRangeStart <= 0 || InpLots >= 1440){
 Alert(" Range start < 0 or >= 1440");
 return INIT_PARAMETERS_INCORRECT;
