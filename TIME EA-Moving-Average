@@ -6,6 +6,53 @@
 //| include Expert initialization function                                   |
 //+-----------------------------------------------------------
     #include <Trade\Trade.mqh>
+    
+    
+//+------------------------------------------------------------------+
+//| INPUT |
+//+------------------------------------------------------------------+
+
+input group "***General Inputs***"
+input long InpMageicNumber = 12345;   // magic number
+
+enum LOT_MODE_ENUM{
+     LOT_MODE_FIXED,       //FIXED LOTS
+     LOT_MODE_MONEY,      //LOT BASED ON MONEY
+     LOT_MODE_PCT_ACCOUNT //LOTS BASED ON % OF ACCOUNT      
+    
+};
+
+input LOT_MODE_ENUM InpLotMode = LOT_MODE_FIXED; //LOT MODE
+input double InpLots = 0.01;           // lot side / percent
+
+input int InpStopLoss = 150;            //stoploss in % to the range (0=OFF)[means function when we have no take profit only stoploss turned off[0]]
+input bool InpStopLossTrailing = false; //Trailing StopLoss
+input int InpTakeProfit =200;          //Takeprofit in % to the range (0=OFF)[means function when we have no take profit only stoploss turned off[0]]
+
+
+
+input group"*** Range Inputs ***" 
+input int InpRangeStart = 600;         //range start time is minutes after mid -night 
+input int InpRangeDuration = 120;      // range duration in minutes
+input int InpRangeClose = 1200;        //range close time in minutes (-1=off)--(zero minuete after mid-night [-1]) making the close time optional
+
+
+// DECIDE WHEATHER TO TRADE TO THE HIGH OR THE LOW, OR ONE BREAK-OUT PER-RANGE
+enum BREAKOUT_MODE_ENUM {
+   ONE_SIGNAL,              //ONE BREAKOUT PER RANGE
+   TWO_SIGNALS             // HIGH AND LOW BREAKOUT
+};
+
+input BREAKOUT_MODE_ENUM InpBreakoutMode = ONE_SIGNAL; //Breakout mode
+
+
+input group"***Inputs Days of week ***"; 
+input bool InpMonday = true;       //range on Monday          // YOU CAN EXCLUDE
+input bool InpTueday = true;       //range on Tueday          // THE DAY OF THE 
+input bool InpWednesday = true;       //range on Wednesday    // WEEK YOU DON'T WANT A RANGE TRADE.
+input bool InpThursday = true;       //range on Thusday
+input bool InpFriday = true;       //range on Friday
+
 
 //---------------------------------------------------------------------+
 //|  INPUT GLOBAL VARIABLE                                             |
@@ -27,37 +74,6 @@
    RANGE_STRUCT range;
    MqlTick prevTick,lastTick;
    CTrade trade;
-//+------------------------------------------------------------------+
-//| INPUT |
-//+------------------------------------------------------------------+
-
-input group "***General Inputs***"
-input int InpStopLoss = 150;             //stoploss in % to the range (0=OFF)[means function when we have no take profit only stoploss turned off[0]]
-input int InpTakeProfit =200;          //Takeprofit in % to the range (0=OFF)[means function when we have no take profit only stoploss turned off[0]]
-input double InpLots = 0.01;           // lot side
-input long InpMageicNumber = 12345;   // magic number
-
-input group"*** Range Inputs ***" 
-input int InpRangeStart = 600;         //range start time is minutes after mid -night 
-input int InpRangeDuration = 120;      // range duration in minutes
-input int InpRangeClose = 1200;        //range close time in minutes (-1=off)--(zero minuete after mid-night [-1]) making the close time optional
-
-
-// DECIDE WHEATHER TO TRADE TO THE HIGH OR THE LOW, OR ONE BREAK-OUT PER-RANGE
-enum BREAKOUT_MODE_ENUM{
-   ONE_SIGNAL,              //ONE BREAKOUT PER RANGE
-   TWO_SIGNALS             // HIGH AND LOW BREAKOUT
-};
-
-input BREAKOUT_MODE_ENUM InpBreakoutMode = ONE_SIGNAL; //Breakout mode
-
-
-input group"***Inputs Days of week ***" 
-input bool InpMonday = true;       //range on Monday          // YOU CAN EXCLUDE
-input bool InpTueday = true;       //range on Tueday          // THE DAY OF THE 
-input bool InpWednesday = true;       //range on Wednesday    // WEEK YOU DON'T WANT A RANGE TRADE.
-input bool InpThursday = true;       //range on Thusday
-input bool InpFriday = true;       //range on Friday
 
 //+------------------------------------------------------------------+
 //| Expert initialization function |
